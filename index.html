@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SilentBridge | Connecting People, Breaking Barriers</title>
+<style>
+:root {
+  --site-primary: #246BFD;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #DDF7F1;
+  --site-on-secondary: #123E3A;
+  --site-background: #F5F8FF;
+  --site-on-background: #15213B;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --surface: light-dark(#FFFFFF, #171D2C);
+  --surface-soft: light-dark(#EDF3FF, #202A3D);
+  --muted: light-dark(#52617C, #C1CADB);
+  --line: light-dark(#DCE5F5, #364158);
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; overflow: hidden; position: relative; }
+.wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+header { padding: calc(22px * var(--site-spacing-scale)) 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -0.04em; font-size: 1.22rem; }
+.logo { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; color: var(--site-on-primary); background: var(--site-primary); box-shadow: 0 8px 22px #246BFD33; }
+.logo svg { width: 25px; height: 25px; }
+nav { display: flex; align-items: center; gap: 25px; }
+a { color: inherit; text-decoration: none; }
+nav a { color: var(--muted); font-weight: 650; font-size: .93rem; }
+nav a:hover { color: var(--site-primary); }
+.btn { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: calc(13px * var(--site-radius-scale)); padding: 13px 19px; background: var(--site-primary); color: var(--site-on-primary); font-weight: 750; font-size: .94rem; cursor: pointer; box-shadow: 0 8px 20px #246BFD2B; transition: transform .18s ease, filter .18s ease; }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.04); }
+.btn.secondary { color: var(--site-on-background); background: var(--surface); border: 1px solid var(--line); box-shadow: none; }
+.hero { padding: 65px 0 76px; display: grid; grid-template-columns: 1.06fr .94fr; align-items: center; gap: 55px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--site-secondary); color: var(--site-on-secondary); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #1BAA8A; }
+h1, h2, h3 { font-family: var(--site-font-heading); letter-spacing: -.045em; line-height: 1.08; }
+h1 { font-size: calc(clamp(2.7rem, 5.2vw, 4.65rem) * var(--site-heading-scale)); margin: 22px 0 20px; max-width: 650px; }
+.gradient { color: var(--site-primary); }
+.lead { color: var(--muted); font-size: 1.12rem; line-height: 1.75; max-width: 570px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 27px; }
+.note { color: var(--muted); font-size: .84rem; margin-top: 17px; }
+.demo-card { border: 1px solid var(--line); background: var(--surface); border-radius: 27px; padding: 20px; box-shadow: 0 28px 80px #1A3D7917; position: relative; }
+.demo-top { display: flex; align-items: center; justify-content: space-between; padding: 4px 2px 18px; border-bottom: 1px solid var(--line); font-weight: 750; }
+.live { color: #16856C; background: #DDF7F1; padding: 6px 9px; border-radius: 999px; font-size: .72rem; font-weight: 800; }
+.video-panel { min-height: 210px; margin-top: 18px; border-radius: 20px; background: linear-gradient(135deg, #DCE9FF, #E7FBF5); display: grid; place-items: center; position: relative; overflow: hidden; }
+.video-panel:before, .video-panel:after { content: ""; position: absolute; border-radius: 50%; background: #FFFFFF65; opacity: var(--site-decoration-opacity); }
+.video-panel:before { width: 190px; height: 190px; top: -80px; right: -30px; }
+.video-panel:after { width: 130px; height: 130px; bottom: -65px; left: -30px; }
+.hand-art { width: 140px; height: 150px; position: relative; z-index: 1; }
+.hand-art svg { width: 100%; height: 100%; }
+.camera-label { position: absolute; left: 13px; bottom: 13px; background: #FFFFFFE8; color: #253A62; border-radius: 9px; padding: 7px 10px; font-size: .72rem; font-weight: 750; z-index: 2; }
+.transcript { margin-top: 14px; padding: 15px; border-radius: 15px; background: var(--surface-soft); }
+.transcript small { display: block; color: var(--muted); margin-bottom: 6px; font-weight: 700; }
+.transcript strong { font-size: 1.04rem; }
+.sound { display: flex; gap: 4px; align-items: center; height: 20px; margin-top: 10px; }
+.sound span { width: 4px; border-radius: 6px; background: var(--site-primary); height: 7px; }
+.sound span:nth-child(3n) { height: 17px; } .sound span:nth-child(2n) { height: 12px; }
+.trust { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; }
+.trust-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.trust p { color: var(--muted); margin: 0; font-size: .9rem; }
+.pills { display: flex; flex-wrap: wrap; gap: 9px; }
+.pill { border: 1px solid var(--line); background: var(--surface); padding: 8px 12px; border-radius: 999px; font-size: .82rem; font-weight: 700; }
+section { padding: 78px 0; }
+.section-head { max-width: 690px; margin: 0 auto 38px; text-align: center; }
+.section-head h2 { font-size: calc(clamp(2rem, 3.8vw, 3.2rem) * var(--site-heading-scale)); margin: 0 0 14px; }
+.section-head p { color: var(--muted); line-height: 1.7; margin: 0; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+.feature { background: var(--surface); border: 1px solid var(--line); border-radius: calc(20px * var(--site-radius-scale)); padding: 25px; }
+.feature-icon { width: 47px; height: 47px; display: grid; place-items: center; border-radius: 14px; color: var(--site-primary); background: var(--surface-soft); margin-bottom: 19px; }
+.feature-icon svg { width: 24px; height: 24px; }
+.feature h3 { font-size: 1.22rem; margin: 0 0 10px; letter-spacing: -.025em; }
+.feature p { color: var(--muted); line-height: 1.65; margin: 0; font-size: .94rem; }
+.how { background: var(--surface-soft); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; counter-reset: step; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 23px; }
+.step-number { color: var(--site-primary); font-weight: 850; font-size: .82rem; letter-spacing: .1em; }
+.step h3 { margin: 12px 0 8px; font-size: 1.18rem; }
+.step p { color: var(--muted); line-height: 1.6; font-size: .92rem; margin: 0; }
+.cta { padding: 0 0 78px; }
+.cta-panel { padding: 48px; border-radius: 28px; background: var(--site-primary); color: var(--site-on-primary); display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.cta-panel h2 { font-size: calc(clamp(2rem, 3.6vw, 3rem) * var(--site-heading-scale)); max-width: 600px; margin: 0 0 12px; }
+.cta-panel p { margin: 0; line-height: 1.65; color: #E4ECFF; max-width: 570px; }
+.cta-panel .btn { background: #FFFFFF; color: #1F56D8; box-shadow: none; flex-shrink: 0; }
+footer { border-top: 1px solid var(--line); padding: 26px 0; }
+.footer-inner { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; color: var(--muted); font-size: .86rem; }
+footer strong { color: var(--site-on-background); }
+.modal-backdrop { position: fixed; inset: 0; display: none; place-items: center; padding: 20px; background: #071329A8; z-index: 10; }
+.modal-backdrop.open { display: grid; }
+.modal { width: min(460px, 100%); background: var(--surface); color: var(--site-on-background); border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 24px 90px #0004; }
+.modal h2 { margin: 0 0 8px; font-size: 1.8rem; }
+.modal p { color: var(--muted); line-height: 1.6; }
+.modal label { display: block; margin: 13px 0 6px; font-size: .88rem; font-weight: 750; }
+.modal input, .modal textarea { width: 100%; font: inherit; border: 1px solid var(--line); background: var(--site-background); color: var(--site-on-background); padding: 12px; border-radius: 10px; }
+.modal textarea { min-height: 90px; resize: vertical; }
+.modal-actions { display: flex; gap: 10px; margin-top: 17px; flex-wrap: wrap; }
+.status { font-size: .88rem; color: var(--muted); margin-top: 12px; }
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 38px; gap: 35px; } .hero-copy { max-width: 680px; } .features, .steps { grid-template-columns: 1fr; } .cta-panel { flex-direction: column; align-items: flex-start; padding: 32px; } nav a:not(.btn) { display: none; } }
+@media (max-width: 480px) { .wrap { width: min(100% - 28px, 1120px); } h1 { font-size: 2.65rem; } section { padding: 58px 0; } .demo-card { padding: 13px; } .actions .btn { width: 100%; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#home" aria-label="SilentBridge home">
+        <span class="logo"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12c2.1-4.7 5.2-7 8-7s5.9 2.3 8 7c-2.1 4.7-5.2 7-8 7s-5.9-2.3-8-7Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <span>SilentBridge</span>
+      </a>
+      <nav aria-label="Main navigation"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="#about">Our mission</a><a class="btn" href="#contact">Explore the idea</a></nav>
+    </header>
+    <main id="home">
+      <section class="hero" style="padding-top: 30px;">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="dot"></span> Accessibility powered by AI</div>
+          <h1>Every voice matters.<br><span class="gradient">Every sign deserves</span> to be understood.</h1>
+          <p class="lead">SilentBridge is an assistive technology concept designed to make everyday conversations easier between Deaf and hard-of-hearing people and hearing people.</p>
+          <div class="actions"><a class="btn" href="#features">Discover SilentBridge <span aria-hidden="true">&nbsp;→</span></a><button class="btn secondary" type="button" data-open-contact>Request a demo</button></div>
+          <p class="note">Our vision: more inclusive conversations in education, healthcare, workplaces and public services.</p>
+        </div>
+        <div class="demo-card" aria-label="Illustrative SilentBridge interface preview">
+          <div class="demo-top"><span>Communication preview</span><span class="live">CONCEPT UI</span></div>
+          <div class="video-panel">
+            <div class="hand-art"><svg viewBox="0 0 150 160" fill="none" aria-label="Illustration of a hand sign"><path d="M51 135c-8-11-16-23-23-39-3-7-1-13 5-15 5-2 9 1 12 6l11 17-8-53c-1-7 3-12 9-12s9 4 10 10l7 40-2-62c0-7 4-11 10-11 6 0 9 4 9 11l3 61 4-45c1-7 5-10 10-9 6 1 8 5 7 12l-2 45 7-23c2-6 7-8 12-6 5 2 7 7 5 13l-14 42c-5 17-17 28-34 32l-24 5c-7 1-12-2-14-8Z" fill="#F1B995" stroke="#9B6247" stroke-width="2.5" stroke-linejoin="round"/><path d="M56 105l-2-23M74 88l-1-29M94 88l3-32M113 96l5-23" stroke="#D9916A" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+            <span class="camera-label">Illustrative sign input</span>
+          </div>
+          <div class="transcript"><small>RECOGNIZED MESSAGE · EXAMPLE</small><strong>“Hello! Nice to meet you.”</strong><div class="sound" aria-label="Illustrative speech waveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="trust"><div class="wrap trust-inner"><p>Designed with inclusive communication in mind</p><div class="pills"><span class="pill">Deaf & hard-of-hearing people</span><span class="pill">Families & educators</span><span class="pill">Healthcare & public services</span></div></div></div>
+  <section id="features"><div class="wrap"><div class="section-head"><h2>One bridge. More ways to connect.</h2><p>SilentBridge explores how AI-enabled tools could support two-way communication—without wearables or specialized hardware.</p></div><div class="features">
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="11" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h3>Sign to text & speech</h3><p>Explore camera-based recognition of selected Indian Sign Language (ISL) signs, with recognized messages presented as text and intended speech output.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" stroke="currentColor" stroke-width="1.8"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v3M8 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h3>Speech to text</h3><p>Help hearing users' spoken words appear as text, supporting conversations where listening to speech may not be accessible.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H9l-5 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h3>Simple, inclusive design</h3><p>A clear, approachable interface built around the goal of more independent communication in everyday situations.</p></article>
+  </div></div></section>
+  <section class="how" id="how-it-works"><div class="wrap"><div class="section-head"><h2>How the experience could work</h2><p>A simple concept flow focused on making communication feel more natural.</p></div><div class="steps"><article class="step"><div class="step-number">STEP 01</div><h3>Choose how to communicate</h3><p>Use a camera-based sign input or enter spoken words through a speech-to-text flow.</p></article><article class="step"><div class="step-number">STEP 02</div><h3>Convert the message</h3><p>AI-assisted recognition and language processing are intended to turn supported input into an accessible message.</p></article><article class="step"><div class="step-number">STEP 03</div><h3>Share and understand</h3><p>Display the message as text and, where supported, provide speech output to help both people take part.</p></article></div></div></section>
+  <section id="about"><div class="wrap"><div class="section-head"><h2>Technology with a human purpose</h2><p>Our mission is to help reduce communication barriers and encourage more inclusive education, healthcare, workplaces and public services. SilentBridge is a prototype concept; recognition accuracy and supported signs must be tested with Deaf users and sign-language experts.</p></div></div></section>
+  <section class="cta" id="contact"><div class="wrap"><div class="cta-panel"><div><h2>Help us build conversations without barriers.</h2><p>Interested in sharing feedback, validating the concept, or exploring a demonstration? We'd love to hear from accessibility advocates, educators, interpreters and potential users.</p></div><button class="btn" type="button" data-open-contact>Share your interest&nbsp; →</button></div></div></section>
+  <footer><div class="wrap footer-inner"><span><strong>SilentBridge</strong> · Connecting People, Breaking Barriers.</span><span>Student innovation concept · AI & accessibility</span></div></footer>
+</div>
+<div class="modal-backdrop" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal"><h2 id="modal-title">Connect with SilentBridge</h2><p>This demo form shows how a contact call-to-action could work. It does not send or store messages yet.</p><form id="interest-form"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="Enter your name" required><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required><label for="message">How would you like to help?</label><textarea id="message" name="message" placeholder="Feedback, user testing, partnership..."></textarea><div class="modal-actions"><button class="btn" type="submit">Prepare message</button><button class="btn secondary" type="button" id="close-modal">Close</button></div><div class="status" id="form-status" aria-live="polite"></div></form></div></div>
+<script>
+const modal = document.getElementById('contact-modal');
+const openButtons = document.querySelectorAll('[data-open-contact]');
+const closeButton = document.getElementById('close-modal');
+const form = document.getElementById('interest-form');
+const status = document.getElementById('form-status');
+function openModal() { modal.classList.add('open'); status.textContent = ''; document.getElementById('name').focus(); }
+function closeModal() { modal.classList.remove('open'); }
+openButtons.forEach(button => button.addEventListener('click', openModal));
+closeButton.addEventListener('click', closeModal);
+modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeModal(); });
+form.addEventListener('submit', event => { event.preventDefault(); const data = new FormData(form); const message = `SilentBridge enquiry\nName: ${data.get('name')}\nEmail: ${data.get('email')}\nInterest: ${data.get('message') || 'General feedback'}`; status.textContent = 'Your message is ready to copy, but this prototype does not send it. Copy the details below to contact your team:'; const preview = document.createElement('textarea'); preview.readOnly = true; preview.rows = 5; preview.style.marginTop = '10px'; preview.value = message; preview.setAttribute('aria-label', 'Prepared enquiry message'); const existing = document.getElementById('prepared-message'); if (existing) existing.remove(); preview.id = 'prepared-message'; status.appendChild(preview); });
+</script>
+</body>
+</html>
